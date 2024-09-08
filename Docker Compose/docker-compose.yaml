@@ -1,0 +1,34 @@
+---
+version: "3.9"
+
+services:
+  nopcommerce:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nop:latest
+    container_name: nopcommerce
+    ports:
+      - "35000:5000"
+    networks:
+      - nop-net
+    depends_on:
+      - nop-db
+
+  nop-db:
+    image: mysql:latest
+    container_name: mysql
+    networks:
+      - nop-net
+    volumes:
+      - nop-db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=SureshKola
+      - MYSQL_USER=nop
+      - MYSQL_PASSWORD=SureshKola
+      - MYSQL_DATABASE=nop
+
+networks:
+  nop-net:
+volumes:
+  nop-db:
